@@ -200,7 +200,6 @@ class plgContentPvpdf extends JPlugin
             $file_path = $temp[1];
 
             if ($file_path && $content = $this->getContent($file_path)) {
-dd($file_path, $content);
                 $text = JString::str_ireplace($regs[0][0], $content, $text);
             }
         }
