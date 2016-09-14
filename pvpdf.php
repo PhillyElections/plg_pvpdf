@@ -193,11 +193,12 @@ class plgContentPvpdf extends JPlugin
             return true;
         }
 
-        $search = "(\[\[PVPDF:.*\]\])";
+        $search = "(\[\[PVPDF.*\]\])";
 
         while (preg_match($search, $text, $regs, PREG_OFFSET_CAPTURE)) {
-            $temp = explode(':', trim(trim($regs[0][0], '[]'), '[]'));
-            dd($temp);
+            $temp = explode('"', trim(trim($regs[0][0], '[]'), '[]'));
+            $file_path = urldecode($temp[1]);
+            dd($file_path);
             if (sizeof($temp) === 2) {
                 $temp2 = explode(':', $temp[0]);
                 $field = $temp2[1];
