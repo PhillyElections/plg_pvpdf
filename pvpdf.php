@@ -198,8 +198,9 @@ class plgContentPvpdf extends JPlugin
         while (preg_match($search, $text, $regs, PREG_OFFSET_CAPTURE)) {
             $temp = explode(':', trim(trim($regs[0][0], '[]'), '[]'));
             $file_path = $temp[1];
-dd($file_path);
-            if ($field && $value && $content = $this->getContent($file_path)) {
+
+            if ($file_path && $content = $this->getContent($file_path)) {
+dd($file_path, $content);
                 $text = JString::str_ireplace($regs[0][0], $content, $text);
             }
         }
