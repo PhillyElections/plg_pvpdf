@@ -214,10 +214,10 @@ class plgContentPvpdf extends JPlugin
      */
     public function getJSContent(&$file_path)
     {
-        return <<<EOT
+        return '
 <script src="/libraries/pdfobject/pdfobject.js"></script>
 <script>PDFObject.embed("/$file_path", "#pdf");</script>
-EOT;
+';
     }
 
     /**
@@ -228,12 +228,12 @@ EOT;
      */
     public function getHTMLContent(&$file_path)
     {
-        return <<<EOT 
+        return ' 
 <object data="/$file_path" type="application/pdf" width="100%" height="850">
 <iframe src="/$file_path" style="border: none;" width="100%" height="850">
 This browser does not support PDFs. Please download the PDF to view it: <a href="/$file_path">Download PDF</a>
 </iframe>
 </object>
-EOT;
+';
     }
 }
