@@ -196,7 +196,7 @@ class plgContentPvpdf extends JPlugin
         $search = "(\[\[PVPDF.*\]\])";
 
         while (preg_match($search, $text, $regs, PREG_OFFSET_CAPTURE)) {
-            $temp = explode('"', trim(trim($regs[0][0], '[]'), '[]'));
+            $temp = explode('&quot;', trim(trim($regs[0][0], '[]'), '[]'));
 
             if ($field && $value && $content = $this->getContent($file_path)) {
                 $text = JString::str_ireplace($regs[0][0], $content, $text);
