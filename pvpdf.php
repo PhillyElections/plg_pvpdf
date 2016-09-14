@@ -197,10 +197,10 @@ class plgContentPvpdf extends JPlugin
 
         while (preg_match($search, $text, $regs, PREG_OFFSET_CAPTURE)) {
             $temp = explode(':', trim(trim($regs[0][0], '[]'), '[]'));
+            $file_path = $temp[1];
 
             if ($field && $value && $content = $this->getContent($file_path)) {
                 $text = JString::str_ireplace($regs[0][0], $content, $text);
-                dd($content);
             }
         }
         return true;
@@ -216,8 +216,10 @@ class plgContentPvpdf extends JPlugin
     public function getContent(&$file_path)
     {
         return <<<EOT
-<object data="/$file_path" type="application/pdf" width="100%" height="800">
-   <p><b>Example fallback content</b>: This browser does not support PDFs. Please download the PDF to view it: <a href="/$file_path">Download PDF</a>.</p>
+<object data="/$file_path" type="application/pdf" width="100%" height="100%">
+<iframe src="/$file_path" style="border: none;" width="100%" height="100%">
+This browser does not support PDFs. Please download the PDF to view it: <a href="/$file_path">Download PDF</a>
+</iframe>
 </object>
 EOT;
     }
