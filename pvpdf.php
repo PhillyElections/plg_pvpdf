@@ -214,10 +214,11 @@ class plgContentPvpdf extends JPlugin
      */
     public function getJSContent(&$file_path)
     {
-        return '
-<script src="/libraries/pdfobject/pdfobject.js"></script>
-<script>PDFObject.embed("/$file_path", "#pdf");</script>
-';
+        $id = basename($file_path);
+        $document = &JFactory::getDocument();
+        $document->addCustomTag('<script src="/libraries/pdfobject/pdfobject.js"></script>');
+        $document->addScriptDeclaration('PDFObject.embed("/$file_path", "#'.$id.'"');
+        return "<div id=\"$id\"></div>";
     }
 
     /**
