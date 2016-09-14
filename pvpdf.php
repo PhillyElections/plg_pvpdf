@@ -199,7 +199,7 @@ class plgContentPvpdf extends JPlugin
             $temp = explode(':', trim(trim($regs[0][0], '[]'), '[]'));
             $file_path = $temp[1];
 
-            if ($file_path && $content = $this->getContent($file_path)) {
+            if ($file_path && $content = $this->getJSContent($file_path)) {
                 $text = JString::str_ireplace($regs[0][0], $content, $text);
             }
         }
@@ -207,15 +207,28 @@ class plgContentPvpdf extends JPlugin
     }
 
     /**
-     * Get ballot data,
-     * return ballot display.
+     * Get js content,
      *
-     * @param   objectList   $results  ballot data
+     * @param   $file_Path
      * @return  string
      */
-    public function getContent(&$file_path)
+    public function getJSContent(&$file_path)
     {
         return <<<EOT
+<script src="/libraries/pdfobject/pdfobject.js"></script>
+<script>PDFObject.embed("/$file_path", "#pdf");</script>
+EOT;
+    }
+
+    /**
+     * Get HTML data,
+     *
+     * @param   $file_Path
+     * @return  string
+     */
+    public function getHTMLContent(&$file_path)
+    {
+        return <<<EOT 
 <object data="/$file_path" type="application/pdf" width="100%" height="850">
 <iframe src="/$file_path" style="border: none;" width="100%" height="850">
 This browser does not support PDFs. Please download the PDF to view it: <a href="/$file_path">Download PDF</a>
