@@ -197,15 +197,8 @@ class plgContentPvpdf extends JPlugin
 
         while (preg_match($search, $text, $regs, PREG_OFFSET_CAPTURE)) {
             $temp = explode('"', trim(trim($regs[0][0], '[]'), '[]'));
-            $file_path = urldecode($temp[1]);
-            dd($file_path);
-            if (sizeof($temp) === 2) {
-                $temp2 = explode(':', $temp[0]);
-                $field = $temp2[1];
-                $value = $temp[1];
-            }
 
-            if ($field && $value && $content = $this->getBallots($field, $value)) {
+            if ($field && $value && $content = $this->getContent($file_path)) {
                 $text = JString::str_ireplace($regs[0][0], $content, $text);
             }
         }
@@ -216,58 +209,15 @@ class plgContentPvpdf extends JPlugin
      * Get ballot data,
      * return ballot display.
      *
-     * @param   string   $field  db column
-     * @param   string   $value  db value
-     * @return  method
-     */
-    public function getBallots($field, $value)
-    {
-        $db = &JFactory::getDBO();
-
-        switch ($field) {
-            case 'name':
-                $query = 'SELECT `b`.* from `#__rt_ballot_upload` `b`, `#__rt_election` `e` WHERE `b`.`eid`=`e`.`id` and `e`.`name`=' . $db->quote($value) . ' order by `b`.`file_name`';
-                break;
-
-            case 'id':
-                $query = 'SELECT * FROM `#__rt_ballot_upload` WHERE `eid`=' . (int) $value . ' order by `file_name`';
-                break;
-            default:
-                return false;
-                break;
-        }
-
-        $db->setQuery($query);
-        try {
-            $results = $db->loadObjectList();
-        } catch (Exception $e) {
-            return JText::_('Something has gone wrong while looking for') . ' <b>' . $field . '</b> : <b>' . $value . '</b>.';
-        }
-        if (!sizeof($results)) {
-            return JText::_('There are no Sample Ballots available for') . ' <b>' . $field . '</b> : <b>' . $value . '</b>.';
-        }
-        return $this->getContent($results);
-    }
-
-    /**
-     * Get ballot data,
-     * return ballot display.
-     *
      * @param   objectList   $results  ballot data
      * @return  string
      */
-    public function getContent(&$results)
+    public function getContent(&$file_path)
     {
-        $content = '<h4>' . JText::_('Download Sample Ballots') . '</h4><ul>';
-        foreach ($results as $result) {
-            $sid = $result->sid;
-            if (JString::strpos($result->sid, '%') !== false && JString::strpos($result->sid, '^') !== false) {
-                $temp = explode('%', $result->sid);
-                $sid = JString::trim(JString::str_ireplace('^', ' ', $temp[1]));
-            }
-            $content .= '<li><a href="/ballot_paper/' . $result->file_id . '.pdf" target="_blank">' . JText::_('District') . ' ' . $sid . '</a></li>';
-        }
-        $content .= '</ul>';
-        return $content;
+        return <<<EOT
+<object data="/$file_path" type="application/pdf" width="100%" height="800">
+   <p><b>Example fallback content</b>: This browser does not support PDFs. Please download the PDF to view it: <a href="/$file_path">Download PDF</a>.</p>
+</object>
+EOT;
     }
 }
