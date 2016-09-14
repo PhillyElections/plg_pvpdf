@@ -216,8 +216,8 @@ class plgContentPvpdf extends JPlugin
     public function getContent(&$file_path)
     {
         return <<<EOT
-<object data="/$file_path" type="application/pdf" width="100%" height="100%">
-<iframe src="/$file_path" style="border: none;" width="100%" height="100%">
+<object data="/$file_path" type="application/pdf" width="100%" height="850%">
+<iframe src="/$file_path" style="border: none;" width="100%" height="850%">
 This browser does not support PDFs. Please download the PDF to view it: <a href="/$file_path">Download PDF</a>
 </iframe>
 </object>
