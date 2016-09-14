@@ -11,7 +11,6 @@
 <description>Takes the URI of a file and return an embedded PDF object of the correct language. Usage (note capitals): [[PVPDF"URI"]].</description>
     <files>
         <filename plugin="pvpdf">pvpdf.php</filename>
-        <filename>pvpdf_includes/pdfobject.min.js</filename>
     </files>
     <folder>pvpdf_includes/</folder> 
     <languages>
