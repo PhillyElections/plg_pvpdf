@@ -12,6 +12,7 @@
     <files>
         <filename plugin="pvpdf">pvpdf.php</filename>
     </files>
+    <folder>pvpdf_includes/</folder> 
     <languages>
         <language tag="en-GB">language/en-GB/en-GB.plg_pvpdf.ini</language>
         <language tag="es-ES">language/es-ES/es-ES.plg_pvpdf.ini</language>
