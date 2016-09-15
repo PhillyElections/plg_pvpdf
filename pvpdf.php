@@ -210,11 +210,12 @@ class plgContentPvpdf extends JPlugin
             $ext = JFile::getExt($file_name);
             $file_basename = JFile::stripExt($file_name);
             $new_filename = implode('.',array($file_basename . JText::_('LANGUAGE'),$ext));
-            $new_file_path = $full_file_path . "/" . $new_filename;
+            $new_full_file_path = $full_file_path . "/" . $new_filename;
+            $new_file_path = str_replace(JPATH_ROOT . '/', '', $new_full_file_path);
 
 
             // Let's make sure this non-remote file exists
-            if (JFile::exists($new_file_path)) {
+            if (JFile::exists($new_full_file_path)) {
                 // it exists. let's make and insert a display
                 if ($file_path && $content = $this->getHTMLContent($new_file_path)) {
                     $text = JString::str_ireplace($regs[0][0], $content, $text);
