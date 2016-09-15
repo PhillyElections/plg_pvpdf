@@ -245,7 +245,7 @@ class plgContentPvpdf extends JPlugin
         $file_name = JFile::getName($file_path);
         $ext = JFile::getExt($file_name);
         $file_basename = JFile::stripExt($file_name);
-        $new_filename = implode('.',array($file_basename . JText::_('LANGUAGE'),$ext);
+        $new_filename = implode('.',array($file_basename . JText::_('LANGUAGE'),$ext));
         return 
 <<<EOT
 <style>
