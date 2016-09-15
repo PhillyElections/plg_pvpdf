@@ -228,12 +228,12 @@ class plgContentPvpdf extends JPlugin
      * @param   $file_Path
      * @return  string
      */
-    public function getJSContent($new_file_path)
+    public function getJSContent($file_path)
     {
-        $id = JString::str_ireplace(".","_", basename($new_file_path));
+        $id = JString::str_ireplace(".","_", basename($file_path));
         $document = &JFactory::getDocument();
         $document->addCustomTag('<script src="/libraries/pdfobject/pdfobject.js"></script>');
-        $document->addScriptDeclaration('PDFObject.embed("/$new_file_path", "#'.$id.'");');
+        $document->addScriptDeclaration('PDFObject.embed("/$file_path", "#'.$id.'");');
         return "<div id=\"$id\"></div>";
     }
 
@@ -243,7 +243,7 @@ class plgContentPvpdf extends JPlugin
      * @param   $file_Path
      * @return  string
      */
-    public function getHTMLContent($new_file_path)
+    public function getHTMLContent($file_path)
     {
         return 
 <<<EOT
@@ -251,9 +251,9 @@ class plgContentPvpdf extends JPlugin
 .pdfobject{border: none; width:100%; height:900px;}
 @media (max-width: 600px) {.pdfobject {height:600px;}}
 </style>
-<object class="pdfobject" data="/$new_file_path" type="application/pdf">
-<iframe class="pdfobject" src="/$new_file_path">
-This browser does not support PDFs. Please download the PDF to view it: <a href="/$new_file_path">Download PDF</a>
+<object class="pdfobject" data="/$file_path" type="application/pdf">
+<iframe class="pdfobject" src="/$file_path">
+This browser does not support PDFs. Please download the PDF to view it: <a href="/$file_path">Download PDF</a>
 </iframe></object>
 EOT;
     }
