@@ -217,7 +217,7 @@ class plgContentPvpdf extends JPlugin
         $id = JString::str_ireplace(".","_", basename($file_path));
         $document = &JFactory::getDocument();
         $document->addCustomTag('<script src="/libraries/pdfobject/pdfobject.js"></script>');
-        $document->addScriptDeclaration('PDFObject.embed("/$file_path", "#'.$id.'")');
+        $document->addScriptDeclaration('PDFObject.embed("/$file_path", "#'.$id.'");');
         return "<div id=\"$id\"></div>";
     }
 
