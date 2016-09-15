@@ -207,29 +207,16 @@ class plgContentPvpdf extends JPlugin
             }
             $full_file_path = dirname(JPATH_ROOT . "/". $file_path);
             $file_name = JFile::getName($file_path);
-            $ext = JFile::getExt($file_name);
-            $file_basename = JFile::stripExt($file_name);
-            // let's work out what the translated filename *might* be
-            $new_filename = implode('.',array($file_basename . JText::_('LANGUAGE'),$ext));
-            $new_full_file_path = $full_file_path . "/" . $new_filename;
-            $new_file_path = str_replace(JPATH_ROOT . '/', '', $new_full_file_path);
-
-            // Let's check for that (possibly) translated file
-            if (!JFile::exists($new_full_file_path)) {
-                // It's not there.  Switch back.
-                $new_full_file_path = $full_file_path;
-                $new_file_path = $file_path;
-            }
 
             // Let's make sure this non-remote file exists
-            if (JFile::exists($new_full_file_path)) {
+            if (JFile::exists($full_file_path)) {
                 // it exists. let's make and insert a display
-                if ($file_path && $content = $this->getHTMLContent($new_file_path)) {
+                if ($file_path && $content = $this->getHTMLContent($file_path)) {
                     $text = JString::str_ireplace($regs[0][0], $content, $text);
                 }
             } else {
                 // It doesn't exist. let's return an error display
-                $text = JString::str_ireplace($regs[0][0], "<div class=\"error\">This file doesn't exist ($new_file_path). Nothing to see here.</div>", $text);
+                $text = JString::str_ireplace($regs[0][0], "<div class=\"error\">This file doesn't exist ($new_full_file_path). Nothing to see here.</div>", $text);
             }
         }
         return true;
