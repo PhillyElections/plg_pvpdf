@@ -213,6 +213,13 @@ class plgContentPvpdf extends JPlugin
             $new_full_file_path = $full_file_path . "/" . $new_filename;
             $new_file_path = str_replace(JPATH_ROOT . '/', '', $new_full_file_path);
 
+            // Let's check for that (possibly) translated file
+            if (!JFile::exists($new_full_file_path)) {
+                if(JFile::exists($full_file_path)) {
+                    $new_full_file_path = $full_file_path;
+                    $new_file_path = $file_path;
+                }
+            }
 
             // Let's make sure this non-remote file exists
             if (JFile::exists($new_full_file_path)) {
