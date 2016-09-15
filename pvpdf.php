@@ -53,9 +53,9 @@ class plgContentPvpdf extends JPlugin
     {
         global $mainframe;
         if (is_object($article)) {
-            return $this->prepPvballotDisplay($article->text);
+            return $this->getPvpdfDisplay($article->text);
         }
-        return $this->prepPvballotDisplay($article);
+        return $this->getPvpdfDisplay($article);
     }
 
     /**
@@ -146,14 +146,14 @@ class plgContentPvpdf extends JPlugin
     }
 
     /**
-     * Check for a PVBallotdisplay block,
+     * Check for a Pvpdf block,
      * skip <script> blocks, and
-     * call getPVballotdisplayStrings() as appropriate.
+     * call getPvpdfStrings() as appropriate.
      *
      * @param   string   $text  content
      * @return  bool
      */
-    public function prepPvballotDisplay(&$text)
+    public function getPvpdfDisplay(&$text)
     {
         // Quick, cheap chance to back out.
         if (JString::strpos($text, 'PVPDF') === false) {
@@ -163,12 +163,12 @@ class plgContentPvpdf extends JPlugin
         $text = explode('<script', $text);
         foreach ($text as $i => $str) {
             if ($i == 0) {
-                $this->getPvPdfStrings($text[$i]);
+                $this->getPvpdfStrings($text[$i]);
             } else {
                 $str_split = explode('</script>', $str);
                 foreach ($str_split as $j => $str_split_part) {
                     if (($j % 2) == 1) {
-                        $this->getPvPdfStrings($str_split[$i]);
+                        $this->getPvpdfStrings($str_split[$i]);
                     }
                 }
                 $text[$i] = implode('</script>', $str_split);
@@ -180,13 +180,13 @@ class plgContentPvpdf extends JPlugin
     }
 
     /**
-     * Find PVballotDisplay blocks,
+     * Find Pvpdf blocks,
      * get display per block.
      *
      * @param   string   $text  content
      * @return  bool
      */
-    public function getPvPdfStrings(&$text)
+    public function getPvpdfStrings(&$text)
     {
         // Quick, cheap chance to back out.
         if (JString::strpos($text, 'PVPDF') === false) {
@@ -214,7 +214,7 @@ class plgContentPvpdf extends JPlugin
      */
     public function getJSContent(&$file_path)
     {
-        $id = basename($file_path);
+        $id = JString::str_ireplace(".","_", basename($file_path));
         $document = &JFactory::getDocument();
         $document->addCustomTag('<script src="/libraries/pdfobject/pdfobject.js"></script>');
         $document->addScriptDeclaration('PDFObject.embed("/$file_path", "#'.$id.'"');
