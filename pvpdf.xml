@@ -8,7 +8,7 @@
     <authorEmail>matthew.e.murphy@phila.gov</authorEmail> 
     <authorUrl>http://www.philadelphiavotes.com</authorUrl> 
     <version>0.1</version>
-<description>Takes the URI of a file and return an embedded PDF object of the correct language. Usage (note capitals): [[PVPDF"URI"]].</description>
+<description>Takes the URI of a file and return an embedded PDF object of the correct language. Usage (note capitals): [[PVPDF|URI]].</description>
     <files>
         <filename plugin="pvpdf">pvpdf.php</filename>
     </files>

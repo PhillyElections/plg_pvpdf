@@ -193,14 +193,27 @@ class plgContentPvpdf extends JPlugin
             return true;
         }
 
-        $search = "(\[\[PVPDF:.*\]\])";
+        $search = "(\[\[PVPDF|.*\]\])";
 
         while (preg_match($search, $text, $regs, PREG_OFFSET_CAPTURE)) {
-            $temp = explode(':', trim(trim($regs[0][0], '[]'), '[]'));
+            $temp = explode('|', trim(trim($regs[0][0], '[]'), '[]'));
             $file_path = $temp[1];
+            $file_array = explode(':',$file_path);
 
-            if ($file_path && $content = $this->getJSContent($file_path)) {
-                $text = JString::str_ireplace($regs[0][0], $content, $text);
+            // Let's make sure it's not a remote file
+            if (in_array($file_array[0], array('http','https','ftp','file'))) {
+                $text = JString::str_ireplace($regs[0][0], "<div class=\"info\">This is a link to a remote file.  Please download the PDF to view it: <a href=\"$file_path\" target=\"_blank\">Download PDF</a></div>", $text);
+                return true;                
+            }
+
+            // Let's make sure this non-remote file exists
+            if (JFile::exists(JPATH_ROOT . "/". $file_Path)) {
+                if ($file_path && $content = $this->getHTMLContent($file_path)) {
+                    $text = JString::str_ireplace($regs[0][0], $content, $text);
+                }
+            } else {
+                // failure to find file
+                $text = JString::str_ireplace($regs[0][0], "<div class=\"error\">This file doens't exist. Nothing to see here.</div>", $text);
             }
         }
         return true;
@@ -229,12 +242,20 @@ class plgContentPvpdf extends JPlugin
      */
     public function getHTMLContent(&$file_path)
     {
-        return ' 
-<object data="/$file_path" type="application/pdf" width="100%" height="850">
-<iframe src="/$file_path" style="border: none;" width="100%" height="850">
+        $file_name = JFile::getName($file_path);
+        $ext = JFile::getExt($file_name);
+        $file_basename = JFile::stripExt($file_name);
+        $new_filename = implode('.',array($file_basename . JText::_('LANGUAGE'),$ext);
+        return 
+<<<EOT
+<style>
+.pdfobject{border: none; width:100%; height:900;}
+@media (max-width: 400px) {.pdfobject {height:600px;}}
+</style>
+<object class="pdfobject" data="/$file_path" type="application/pdf">
+<iframe class="pdfobject" src="/$file_path">
 This browser does not support PDFs. Please download the PDF to view it: <a href="/$file_path">Download PDF</a>
-</iframe>
-</object>
-';
+</iframe></object>
+EOT;
     }
 }
