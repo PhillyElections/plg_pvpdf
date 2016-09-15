@@ -208,12 +208,13 @@ class plgContentPvpdf extends JPlugin
 
             // Let's make sure this non-remote file exists
             if (JFile::exists(JPATH_ROOT . "/". $file_Path)) {
+                // it exists. let's make and insert a display
                 if ($file_path && $content = $this->getHTMLContent($file_path)) {
                     $text = JString::str_ireplace($regs[0][0], $content, $text);
                 }
             } else {
-                // failure to find file
-                $text = JString::str_ireplace($regs[0][0], "<div class=\"error\">This file doens't exist. Nothing to see here.</div>", $text);
+                // It doesn't exist. let's return an error display
+                $text = JString::str_ireplace($regs[0][0], "<div class=\"error\">This file doens't exist. Nothing to see here. (". JPATH_ROOT . "/". $file_Path.")</div>", $text);
             }
         }
         return true;
