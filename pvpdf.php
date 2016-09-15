@@ -235,7 +235,7 @@ class plgContentPvpdf extends JPlugin
     }
 
     /**
-     * Get HTML data,
+     * Get HTML content,
      *
      * @param   $file_Path
      * @return  string
@@ -250,7 +250,7 @@ class plgContentPvpdf extends JPlugin
 <<<EOT
 <style>
 .pdfobject{border: none; width:100%; height:900;}
-@media (max-width: 400px) {.pdfobject {height:600px;}}
+@media (max-width: 600px) {.pdfobject {height:600;}}
 </style>
 <object class="pdfobject" data="/$file_path" type="application/pdf">
 <iframe class="pdfobject" src="/$file_path">
