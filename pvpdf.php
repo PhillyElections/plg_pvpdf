@@ -205,11 +205,18 @@ class plgContentPvpdf extends JPlugin
                 $text = JString::str_ireplace($regs[0][0], "<div class=\"info\">This is a link to a remote file.  Please download the PDF to view it: <a href=\"$file_path\" target=\"_blank\">Download PDF</a></div>", $text);
                 return true;                
             }
+            $full_file_path = dirname(JPATH_ROOT . "/". $file_path);
+            $file_name = JFile::getName($file_path);
+            $ext = JFile::getExt($file_name);
+            $file_basename = JFile::stripExt($file_name);
+            $new_filename = implode('.',array($file_basename . JText::_('LANGUAGE'),$ext));
+            $new_file_path = $full_file_path . "/" . $new_filename;
+
 
             // Let's make sure this non-remote file exists
-            if (JFile::exists(JPATH_ROOT . "/". $file_path)) {
+            if (JFile::exists($new_file_path)) {
                 // it exists. let's make and insert a display
-                if ($file_path && $content = $this->getHTMLContent($file_path)) {
+                if ($file_path && $content = $this->getHTMLContent($new_file_path)) {
                     $text = JString::str_ireplace($regs[0][0], $content, $text);
                 }
             } else {
@@ -226,12 +233,12 @@ class plgContentPvpdf extends JPlugin
      * @param   $file_Path
      * @return  string
      */
-    public function getJSContent(&$file_path)
+    public function getJSContent(&new_file_path)
     {
-        $id = JString::str_ireplace(".","_", basename($file_path));
+        $id = JString::str_ireplace(".","_", basename($new_file_path));
         $document = &JFactory::getDocument();
         $document->addCustomTag('<script src="/libraries/pdfobject/pdfobject.js"></script>');
-        $document->addScriptDeclaration('PDFObject.embed("/$file_path", "#'.$id.'");');
+        $document->addScriptDeclaration('PDFObject.embed("/$new_file_path", "#'.$id.'");');
         return "<div id=\"$id\"></div>";
     }
 
@@ -241,21 +248,17 @@ class plgContentPvpdf extends JPlugin
      * @param   $file_Path
      * @return  string
      */
-    public function getHTMLContent(&$file_path)
+    public function getHTMLContent($new_file_path)
     {
-        $file_name = JFile::getName($file_path);
-        $ext = JFile::getExt($file_name);
-        $file_basename = JFile::stripExt($file_name);
-        $new_filename = implode('.',array($file_basename . JText::_('LANGUAGE'),$ext));
         return 
 <<<EOT
 <style>
 .pdfobject{border: none; width:100%; height:900px;}
 @media (max-width: 600px) {.pdfobject {height:600px;}}
 </style>
-<object class="pdfobject" data="/$file_path" type="application/pdf">
-<iframe class="pdfobject" src="/$file_path">
-This browser does not support PDFs. Please download the PDF to view it: <a href="/$file_path">Download PDF</a>
+<object class="pdfobject" data="/$new_file_path" type="application/pdf">
+<iframe class="pdfobject" src="/$new_file_path">
+This browser does not support PDFs. Please download the PDF to view it: <a href="/$new_file_path">Download PDF</a>
 </iframe></object>
 EOT;
     }
