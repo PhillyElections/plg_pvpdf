@@ -233,7 +233,7 @@ class plgContentPvpdf extends JPlugin
      * @param   $file_Path
      * @return  string
      */
-    public function getJSContent(&new_file_path)
+    public function getJSContent($new_file_path)
     {
         $id = JString::str_ireplace(".","_", basename($new_file_path));
         $document = &JFactory::getDocument();
