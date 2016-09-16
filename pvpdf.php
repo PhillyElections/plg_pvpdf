@@ -205,7 +205,7 @@ class plgContentPvpdf extends JPlugin
                 return true;                
             }
 
-            $full_file_path = dirname(JPATH_ROOT . "/". $file_path);
+            $full_file_path = JPATH_ROOT . "/". $file_path;
 
             // Let's make sure this non-remote file exists
             if (JFile::exists($full_file_path) && $file_path && $content = $this->getHTMLContent($file_path)) {
