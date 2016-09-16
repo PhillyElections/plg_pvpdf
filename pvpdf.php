@@ -198,22 +198,19 @@ class plgContentPvpdf extends JPlugin
         while (preg_match($search, $text, $regs, PREG_OFFSET_CAPTURE)) {
             $temp = explode('|', trim(trim($regs[0][0], '[]'), '[]'));
             $file_path = $temp[1];
-            $file_array = explode(':',$file_path);
 
             // Let's make sure it's not a remote file
             if (in_array($file_array[0], array('http','https','ftp','file'))) {
                 $text = JString::str_ireplace($regs[0][0], "<div class=\"info\">This is a link to a remote file.  Please download the PDF to view it: <a href=\"$file_path\" target=\"_blank\">Download PDF</a></div>", $text);
                 return true;                
             }
+
             $full_file_path = dirname(JPATH_ROOT . "/". $file_path);
-            $file_name = JFile::getName($file_path);
 
             // Let's make sure this non-remote file exists
-            if (JFile::exists($full_file_path)) {
+            if (JFile::exists($full_file_path) && $file_path && $content = $this->getHTMLContent($file_path)) {
                 // it exists. let's make and insert a display
-                if ($file_path && $content = $this->getHTMLContent($file_path)) {
-                    $text = JString::str_ireplace($regs[0][0], $content, $text);
-                }
+                $text = JString::str_ireplace($regs[0][0], $content, $text);
             } else {
                 // It doesn't exist. let's return an error display
                 $text = JString::str_ireplace($regs[0][0], "<div class=\"error\">This file doesn't exist ($new_full_file_path). Nothing to see here.</div>", $text);
