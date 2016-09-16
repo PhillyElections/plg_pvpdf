@@ -1,3 +1,3 @@
 # plg_pvpdf
 
-Takes a pdf basename and returns either a spanish or english embedded pdf.
+Takes a pdf path from site root and returns an embedded pdf object with fallback to iframe which fallsback to link.
