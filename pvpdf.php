@@ -213,7 +213,7 @@ class plgContentPvpdf extends JPlugin
                 $text = JString::str_ireplace($regs[0][0], $content, $text);
             } else {
                 // It doesn't exist. let's return an error display
-                $text = JString::str_ireplace($regs[0][0], "<div class=\"error\">This file doesn't exist ($new_full_file_path). Nothing to see here.</div>", $text);
+                $text = JString::str_ireplace($regs[0][0], "<div class=\"error\">This file doesn't exist ($full_file_path $file_path). Nothing to see here.</div>", $text);
             }
         }
         return true;
