@@ -11,13 +11,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-// Let's make sure the translations are loaded
-$language = JFactory::getLanguage();
-$language->load('plg_pvpdf', JPATH_ADMINISTRATOR, null, null);
-
-jimport('joomla.plugin.plugin');
-jimport('kint.kint');
-
 /**
  * Example Content Plugin
  *
@@ -217,21 +210,6 @@ class plgContentPvpdf extends JPlugin
             }
         }
         return true;
-    }
-
-    /**
-     * Get js content,
-     *
-     * @param   $file_Path
-     * @return  string
-     */
-    public function getJSContent($file_path)
-    {
-        $id = JString::str_ireplace(".","_", basename($file_path));
-        $document = &JFactory::getDocument();
-        $document->addCustomTag('<script src="/libraries/pdfobject/pdfobject.js"></script>');
-        $document->addScriptDeclaration('PDFObject.embed("/$file_path", "#'.$id.'");');
-        return "<div id=\"$id\"></div>";
     }
 
     /**
